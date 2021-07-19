@@ -1,10 +1,11 @@
 import refs from './refs.js';
-import Swal from 'sweetalert2';
+const debounce = require('lodash.debounce');
+import Notiflix from 'notiflix';
 
 const { input, list, countryInfo } = refs;
-const maxCountryLengthToShow = 5;
+const maxCountryLengthToShow = 10;
 
-input.addEventListener('input', onFetchCountry);
+input.addEventListener('input', debounce(onFetchCountry, 300));
 
 function onFetchCountry(evt) {
   //   evt.preventDefault();
@@ -14,7 +15,7 @@ function onFetchCountry(evt) {
     return;
   }
 
-  console.log(evt.data);
+  // console.log(evt.data);
 
   fetch(
     `https://restcountries.eu/rest/v2/name/${evt.target.value}?fields=name;capital;population;flag;languages`,
@@ -28,24 +29,11 @@ function onFetchCountry(evt) {
     })
     .then(countries => {
       console.log(countries);
-      if (countries.length >= maxCountryLengthToShow) {
-        Swal.fire({
-          //   position: 'top-center',
-          icon: 'warning',
-          // icon: 'success',
-          title: 'To many matches found. Please enter a more specific name',
-          showConfirmButton: false,
-        });
+      if (countries.length > maxCountryLengthToShow) {
+        Notiflix.Notify.info('Too many matches found. Please enter a more specific name');
       }
     })
     .catch(() => {
-      Swal.fire({
-        position: 'top-end',
-        icon: 'error',
-        // icon: 'success',
-        title: 'Oops, there is no country whith that name',
-        showConfirmButton: false,
-        timer: 3500,
-      });
+      Notiflix.Notify.failure('Oops, there is no country with that name');
     });
 }
