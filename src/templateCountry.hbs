@@ -1,0 +1,33 @@
+{{#each this}}
+
+  <li class='menu__item'>
+    <article class='country'>
+      <img src='{{flag}}' alt='{{name}}' class='flag__image' />
+      <h2 class='country__name'>{{name}}</h2>
+
+      <div class='card__content'>
+
+        <div class='country__info'>
+          <div id='country__item'>
+            <h3 class='country__item capital'>Capital: </h3>
+            <span>{{capital}}</span>
+          </div>
+
+          <div id='country__item'>
+            <h3 class='country__item population'>Population: </h3>
+            <span>{{population}}</span>
+          </div>
+
+          <div id='country__item'>
+            <h3 class='country__item languages'>Languages: </h3>
+            {{#each languages}}
+              <span>{{this.name}} </span>
+            {{/each}}
+          </div>
+        </div>
+
+      </div>
+    </article>
+  </li>
+
+{{/each}}
